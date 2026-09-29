@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Tracking and Attribution Memo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+/* Layout: single memo column (~70ch) with a memo header block; shares tokens with the dashboard */
+:root{
+  --bg:#f6f6f3; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#4a4946; --muted:#7c7a74; --grid:#e4e3dc; --ring:rgba(11,11,11,.10);
+  --accent:#1f5fae; --accent-wash:#e6eef9; --warn-bg:#fff4dc; --warn-ink:#7a4a00;
+  --display:"Source Serif 4", Georgia, serif; --body:"Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111110; --surface:#1a1a19; --ink:#f4f4f2; --ink-2:#cfcec6; --muted:#97958e; --grid:#2c2c2a; --ring:rgba(255,255,255,.10);
+  --accent:#7fb0ee; --accent-wash:#1c2a3d; --warn-bg:#3a2c0e; --warn-ink:#f5cf7a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111110; --surface:#1a1a19; --ink:#f4f4f2; --ink-2:#cfcec6; --muted:#97958e; --grid:#2c2c2a; --ring:rgba(255,255,255,.10);
+  --accent:#7fb0ee; --accent-wash:#1c2a3d; --warn-bg:#3a2c0e; --warn-ink:#f5cf7a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:780px;margin:0 auto;padding-inline:20px;padding-block:28px 72px}
+a{color:var(--accent)} a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.back{font-size:14px;text-decoration:none}
+.back:hover{text-decoration:underline}
+.paper{background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:34px 40px;margin-top:14px}
+.eyebrow{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.2;margin:6px 0 18px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:22px;margin:34px 0 8px;text-wrap:balance}
+h3{font-size:16.5px;font-weight:700;margin:22px 0 4px}
+.memohead{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;font-size:15px;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);padding:12px 0;margin-bottom:22px}
+.memohead dt{color:var(--muted);font-weight:600;text-transform:uppercase;font-size:12px;letter-spacing:.07em;padding-top:2px}
+.memohead dd{margin:0}
+p,li{max-width:68ch}
+ul,ol{padding-left:22px} li{margin:5px 0}
+.summary{background:var(--accent-wash);border-radius:8px;padding:16px 20px;margin:0 0 8px}
+.summary ol{margin:8px 0 0}
+.fix{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:30px}
+.fix + h2{margin-top:2px}
+.evidence{border-left:3px solid var(--grid);padding:2px 0 2px 16px;margin:14px 0;color:var(--ink-2);font-size:15.5px}
+.evidence b{color:var(--ink)}
+.note{background:var(--warn-bg);color:var(--warn-ink);border-radius:8px;padding:12px 16px;font-size:15px;margin:16px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;background:var(--bg);padding:1px 5px;border-radius:4px;word-break:break-word}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--grid);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+td code{white-space:nowrap}
+.phase{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px;margin-top:10px}
+.phase div{border-top:3px solid var(--accent);padding-top:8px}
+.phase b{display:block;font-size:15px}
+.phase ul{margin:6px 0 0;padding-left:18px;font-size:15px}
+.sources{font-size:14px;color:var(--ink-2)}
+.sources li{margin:3px 0}
+@media (max-width:600px){.paper{padding:22px 18px}.wrap{padding-inline:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← Back to the Slate Ping Explorer dashboard</a>
+  <article class="paper">
+    <div class="eyebrow">Memo</div>
+    <h1>Improving Slate Ping, identity capture and UTM attribution</h1>
+    <dl class="memohead">
+      <dt>Date</dt><dd>September 29, 2026</dd>
+      <dt>Re</dt><dd>Three fixes to make web and campaign data attributable to people, and usable for journey and engagement analysis</dd>
+      <dt>Basis</dt><dd>Slate Ping export, March 30 to September 29, 2026 (2,220,178 page views); see the <a href="./">dashboard</a>. Production history covers at least four years.</dd>
+    </dl>
+
+    <section class="summary" aria-label="Summary">
+      <b>Summary.</b> Our Ping data can't yet tell us who did what, or which campaign brought them. Three fixes, in this order, make that possible:
+      <ol>
+        <li><b>Put Ping on every page a prospect sees</b>, so journeys are recorded from the first visit.</li>
+        <li><b>Create more moments where an anonymous browser becomes a known person</b>, so Slate can attach that browser's history to a record.</li>
+        <li><b>Treat UTMs as a controlled vocabulary, not free text</b>, and carry them through to the person record.</li>
+      </ol>
+      With those in place, we can build journey, repeat‑visit and engagement measures per person and join them to application outcomes.
+    </section>
+
+    <h2>What the current data shows</h2>
+    <ul>
+      <li><b>Ping only covers part of www.dal.ca.</b> It fires mostly on program pages and a few campaign landing pages. About <b>206,000 visits</b> begin on a dal.ca page that isn't tracked, so the start of many journeys is missing.</li>
+      <li><b>Almost no traffic carries real campaign tags.</b> Only about <b>27,000 of 2.2 million</b> URLs (about 1%) contain <code>utm_</code> tags. Slate fills UTM Source and Medium from the referring site when no tag exists, so the UTM columns look richer than they are.</li>
+      <li><b>Where tags exist, they're broken or inconsistent.</b>
+        <ul>
+          <li>TikTok open‑house ads produced about <b>145,000 page views</b>. Most arrived untagged, and the tagged ones were garbled inside Google's <code>_gl</code> parameter.</li>
+          <li>The same source appears under several names: <code>Google</code>/<code>google</code>, <code>meta</code>/<code>Facebook</code>/<code>organic_FB</code>.</li>
+          <li>Campaign names don't follow a pattern: <code>26</code>, <code>oh_26</code>/<code>oh_27</code>, <code>UG25</code>, <code>CBM25-26</code>.</li>
+          <li>Slate emails are tagged two different ways (<code>slate</code>/<code>email</code> and <code>Slate_email</code>).</li>
+        </ul>
+      </li>
+      <li><b>Staff activity is mixed in with prospect activity.</b> Reader and staff pages, plus heavy Dal‑network use, add about <b>50,000 page views</b> that distort engagement figures.</li>
+      <li><b>The export has nothing that ties page views to a browser.</b> "Ping Identity" is unique on every row, so it's a row number. Visitors can only be estimated by IP address, which merges everyone behind a shared network.</li>
+    </ul>
+
+    <div class="fix">Fix 1</div>
+    <h2>Put Ping on every page a prospect sees</h2>
+    <p>Ping only records pages it has been placed on. Coverage should match the prospect journey, not only the program catalogue.</p>
+    <ul>
+      <li><b>Add the Ping script site‑wide</b> through the CMS template or Google Tag Manager, for every prospective‑student section: home, admissions, tuition and awards, residence and housing, international, and every campaign landing page.</li>
+      <li><b>Keep staff activity out.</b> Exclude reader and staff paths and Dal's staff IP ranges in the Slate query, or in the reporting layer, so staff use isn't counted as prospect engagement.</li>
+      <li><b>Add the browser (cookie) identifier to the Ping export,</b> alongside the Person Reference ID. The cookie identifier links anonymous visits from the same browser; the person ID then joins them to the applicant record. Both are far more reliable than IP address.</li>
+      <li><b>Confirm how long the cookie lasts in Safari.</b> www.dal.ca and apply.dal.ca count as the same site, which helps. Safari limits cookies set by scripts, and in some cases that can shorten repeat‑visit tracking to days. Ask Technolutions or the web team how the Ping cookie is set on our domains.</li>
+    </ul>
+
+    <div class="fix">Fix 2</div>
+    <h2>Create more moments where a browser becomes a known person</h2>
+    <p>Slate's Ping cookie keeps a browser's history. When that browser is later identified (by an email click, a portal login or a form submission), Slate attaches its earlier anonymous page views to the person. The earlier and more often that happens, the more of each journey we can see.</p>
+    <ul>
+      <li><b>Low‑friction inquiry forms</b> on program pages, such as "Get program information" or "Remind me about deadlines."</li>
+      <li><b>Event forms</b> for open house, campus tours and webinars. Open‑house pages already draw heavy traffic.</li>
+      <li><b>Program‑explorer or quiz results</b> sent by email.</li>
+      <li><b>Tracked links in every Slate Deliver email.</b> Each click identifies the browser that clicked.</li>
+      <li><b>Portal accounts for inquirers,</b> not only applicants.</li>
+    </ul>
+
+    <div class="fix">Fix 3</div>
+    <h2>Treat UTMs as a controlled vocabulary</h2>
+    <h3>One rulebook and link builder</h3>
+    <p>Everyone who launches a campaign builds links from one shared sheet. Values are lowercase and hyphenated, and each field has a single job:</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Field</th><th>Holds</th><th>Allowed values / pattern</th></tr></thead>
+      <tbody>
+        <tr><td><code>utm_source</code></td><td>The platform</td><td><code>google</code>, <code>meta</code>, <code>tiktok</code>, <code>linkedin</code>, <code>slate</code>, <code>studyportals</code> …</td></tr>
+        <tr><td><code>utm_medium</code></td><td>The channel type (fixed short list)</td><td><code>cpc</code>, <code>paid-social</code>, <code>display</code>, <code>email</code>, <code>sms</code>, <code>referral</code>, <code>organic-social</code>, <code>print-qr</code></td></tr>
+        <tr><td><code>utm_campaign</code></td><td>Cycle, audience, goal and theme</td><td><code>{cycle}_{audience}_{goal}_{program-or-theme}</code>, e.g. <code>fa26_ug-domestic_openhouse_eng</code></td></tr>
+        <tr><td><code>utm_content</code></td><td>The ad or creative</td><td>Short creative ID, e.g. <code>video-01</code></td></tr>
+        <tr><td><code>utm_term</code></td><td>Keyword or targeting</td><td>Keyword or audience name</td></tr>
+      </tbody>
+    </table></div>
+    <p>The sheet also serves as the lookup from each campaign name to its budget, owner and dates.</p>
+
+    <h3>Platform fixes</h3>
+    <ul>
+      <li><b>TikTok:</b> put the UTMs in the ad's destination URL itself, and test a click end to end (landing on apply.dal.ca) before launch.</li>
+      <li><b>Meta:</b> use the URL‑parameters field with dynamic values for the campaign, ad set and ad.</li>
+      <li><b>Google Ads:</b> keep auto‑tagging on, and add UTMs too (tracking template or final‑URL suffix), because Slate doesn't read Google's click IDs.</li>
+      <li><b>Slate Deliver:</b> add UTMs to every mailing in one standard pattern.</li>
+    </ul>
+
+    <h3>Carry tags through to the person record</h3>
+    <p>Slate saves UTMs on a form submission only when they're in the page URL at the moment of submission. A visitor who arrives from an ad, browses, then fills in a form loses the tags. To fix that:</p>
+    <ol>
+      <li>Save the first‑visit and latest‑visit tags in the browser.</li>
+      <li>Pass them into Slate forms, by adding them to the embed URL or through hidden fields.</li>
+      <li>Store them on the person record as <b>first‑touch</b> and <b>latest‑touch</b> source, medium, campaign and date.</li>
+    </ol>
+
+    <h3>Monitor, and map the old tags</h3>
+    <ul>
+      <li><b>Weekly check:</b> a small Slate report listing any source, medium or campaign value not in the rulebook. The TikTok problem would have shown up in the first week.</li>
+      <li><b>Mapping table for past data:</b> translate four years of legacy values to the new standard, so year‑over‑year channel comparisons are possible, with a clear note of when tagging became reliable.</li>
+    </ul>
+
+    <h2>What this makes possible</h2>
+    <p>With pages tracked, people identified and tags captured, we can build three layers of data:</p>
+    <ol>
+      <li><b>Page view → visit → person.</b> Visits grouped by cookie identifier (30‑minute gap rule); people by cookie identifier plus Person Reference ID.</li>
+      <li><b>Dated journey milestones on each person:</b> first web visit, first identified, inquiry, event registered and attended, account created, application started and submitted, first status check, decision, deposit. The time between milestones becomes a core measure.</li>
+      <li><b>Engagement measures per person:</b> visits and active weeks, how recently they were active, program pages viewed and top program, event and tour activity, email clicks, and time on high‑intent pages (application, tuition, residence). These combine into an engagement score written back to Slate as a field. It can drive email segments (for example, "viewed nursing 3+ times, no application"), staff outreach lists, and application and yield prediction.</li>
+    </ol>
+    <p>With four years of history, we can compare the journeys of admitted students who enrolled with those who didn't, see when interest in each program peaks through the year, and measure typical journey length by audience. All of this joins directly to our application‑trends reporting.</p>
+
+    <div class="note"><b>Privacy check before scaling up.</b> Linking browsing history to identified people is processing personal information. As a Nova Scotia public body, Dal should confirm with its privacy office that the privacy notice and cookie consent cover this use before expanding tracking or identity matching.</div>
+
+    <h2>Sequence</h2>
+    <div class="phase">
+      <div><b>Next 30 days</b><ul><li>Site‑wide Ping coverage</li><li>UTM rulebook and link builder</li><li>TikTok, Meta and email tagging fixed</li><li>Staff traffic filtered out</li></ul></div>
+      <div><b>Next 90 days</b><ul><li>First‑ and latest‑touch fields on person records</li><li>More inquiry and event forms</li><li>Cookie and person IDs added to the Ping export</li><li>Weekly tag check running</li></ul></div>
+      <div><b>After that</b><ul><li>Journey milestone fields</li><li>Engagement score in Slate</li><li>Journey analysis by outcome</li><li>Legacy UTM mapping for four‑year trends</li></ul></div>
+    </div>
+
+    <h2>Sources</h2>
+    <ul class="sources">
+      <li><a href="https://knowledge.technolutions.net/docs/ping-overview" rel="noopener">Ping Overview – Slate Knowledge Base (Technolutions)</a></li>
+      <li><a href="https://knowledge.technolutions.net/docs/capturing-utm-parameters-in-forms" rel="noopener">Capturing UTM Parameters in Forms – Slate Knowledge Base</a></li>
+      <li><a href="https://knowledge.technolutions.net/docs/enabling-ping" rel="noopener">Enabling Ping – Slate Knowledge Base</a></li>
+      <li><a href="https://www.carnegiehighered.com/blog/how-to-leverage-ping-in-slate/" rel="noopener">How to Leverage Ping in Slate – Carnegie</a></li>
+      <li><a href="https://joindatacops.com/resources/intelligent-tracking-prevention-itp-explained-the-safari-problem/" rel="noopener">Intelligent Tracking Prevention explained – DataCops</a></li>
+    </ul>
+  </article>
+</div>
+</body>
+</html>
