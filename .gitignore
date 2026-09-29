@@ -1,0 +1,6 @@
+# Raw Slate exports contain IP addresses and (in production) person IDs — never commit them
+*.csv
+*.xlsx
+*.pkl
+.DS_Store
+__pycache__/
